@@ -1,19 +1,18 @@
 <?php include("header.php");
-	function insereProduto($conexao, $nome, $preco){
-		$query = "insert into produtos (nome, preco) values ('{$nome}', {$preco})";
-		return mysqli_query($conexao, $query);
-	}
+	include("banco-produto.php");
 
-	$nome = $_GET['nome'];
-	$preco = $_GET['preco'];
-	$conexao = mysqli_connect('localhost', 'root', 'vertrigo', 'loja');
+	$nome = $_POST['nome'];
+	$preco = $_POST['preco'];
+	$descricao = $_POST['descricao'];
+	$categoria = $_POST['categoria'];
 
 
 	
-	if(insereProduto($conexao, $nome, $preco)) {
+	if(insereProduto($conexao, $nome, $preco, $descricao, $categoria)) {
 		?><p class="text-success">Produto <?= $nome;?> adicionado com sucesso!</p><?php
 	} else {
-		?><p class="text-danger">Produto <?= $nome;?> não adicionado!</p><?php 
+		$msg = mysqli_error($conexao);
+		?><p class="text-danger">Produto <?= $nome;?> não adicionado: <?= $msg ?></p><?php 
 	}
 
 	//mysqli_close($conexao);		//OPCIONAL
